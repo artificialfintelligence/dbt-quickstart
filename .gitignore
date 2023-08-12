@@ -1,0 +1,7 @@
+# dbt
+target/
+dbt_packages/
+logs/
+
+# System Files
+.DS_Store
