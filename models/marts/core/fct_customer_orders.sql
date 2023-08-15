@@ -12,6 +12,16 @@ payments as (
     select * from {{ source('stripe', 'payment') }}
 ),
 
+completed_payments as (
+    select 
+        orderid as order_id,
+        max(created) as payment_finalized_date,
+        sum(amount) / 100.0 as total_amount_paid
+    from payments
+    where status <> 'fail'
+    group by 1
+),
+
 paid_orders as (
     select 
         orders.id as order_id,
@@ -23,15 +33,7 @@ paid_orders as (
         c.first_name as customer_first_name,
         c.last_name as customer_last_name
     from orders
-    left join (
-        select 
-            orderid as order_id,
-            max(created) as payment_finalized_date,
-            sum(amount) / 100.0 as total_amount_paid
-        from payments
-        where status <> 'fail'
-        group by 1
-    ) p on orders.id = p.order_id
+    left join completed_payments p on orders.id = p.order_id
     left join customers c on orders.user_id = c.id 
 ),
 
