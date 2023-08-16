@@ -1,7 +1,7 @@
 {%- set order_statuses = ["placed", "shipped", "completed", "return_pending", "returned"] -%}
 
 with orders as (
-    select * from {{ ref("stg_orders") }}
+    select * from {{ ref("stg_jaffle_shop__orders") }}
 ),
 
 pivoted as (
