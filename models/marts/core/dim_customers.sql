@@ -1,5 +1,5 @@
 with customers as (
-    select * from {{ ref('stg_customers')}}
+    select * from {{ ref('stg_jaffle_shop__customers')}}
 ),
 
 orders as (
@@ -20,8 +20,8 @@ customer_orders as (
 final as (
     select
         customers.customer_id,
-        customers.first_name,
-        customers.last_name,
+        customers.customer_first_name,
+        customers.customer_last_name,
         customer_orders.first_order_date,
         customer_orders.most_recent_order_date,
         coalesce(customer_orders.number_of_orders, 0) as number_of_orders,
