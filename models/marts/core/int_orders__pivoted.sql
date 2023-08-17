@@ -7,8 +7,8 @@ with orders as (
 pivoted as (
     select 
         customer_id,
-        {%- for order_status in order_statuses -%}
-        sum(case when status = "{{ order_status }}" then 1 else 0 end) as {{ order_status }}_count
+        {%- for status in order_statuses -%}
+        sum(case when order_status = "{{ status }}" then 1 else 0 end) as {{ status }}_count
         {%- if not loop.last -%}
         ,
         {% endif -%}
